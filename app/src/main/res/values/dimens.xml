@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_title">24sp</dimen>
+    <dimen name="space8">8dp</dimen>
+    <dimen name="radius8">8dp</dimen>
+    <dimen name="space16">16dp</dimen>
+    <dimen name="radius20">20dp</dimen>
+    <dimen name="padding12">12dp</dimen>
+    <dimen name="space4">4dp</dimen>
+    <dimen name="text_body">16sp</dimen>
+    <dimen name="text_captain">14sp</dimen>
+    <dimen name="text_header">18sp</dimen>
+    <dimen name="elevation8">8dp</dimen>
+    <dimen name="space32">32dp</dimen>
+</resources>

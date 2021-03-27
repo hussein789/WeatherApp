@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:padding="16dp"
+    android:id="@+id/empty_state_container"
+    >
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_search_icon"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/search_by_city_name_and_get_updated_weather_status"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_header"
+        android:layout_marginTop="@dimen/space8"
+        android:layout_marginBottom="@dimen/space8"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/try_london_cairo_los_angeles_and_more_than_200_000_cities_around_the_world"
+        />
+
+
+</LinearLayout>

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Weather App</string>
+    <string name="weather_app">Weather App</string>
+    <string name="search_location">Search Location</string>
+    <string name="locate_me">Locate me</string>
+    <string name="celsius_symbol">C</string>
+    <string name="no_results_found">No result found for %s</string>
+    <string name="degree">%s°</string>
+    <string name="wind_speed">Wind: %s m/h</string>
+    <string name="humidity">Humidity: %s</string>
+    <string name="cloud_cover">Cloud Cover: %s</string>
+    <string name="pressure">Pressure: %s mbar</string>
+    <string name="sunrise">Sunrise: %s</string>
+    <string name="sunset">Sunset: %s</string>
+    <string name="location_permission">Location Permission</string>
+    <string name="location_permission_message">You need to allow location on your device</string>
+    <string name="settings">settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="lat_lng">[%s, %s]</string>
+    <string name="search_by_city_name_and_get_updated_weather_status">Search by City Name, and get updated weather status</string>
+    <string name="try_london_cairo_los_angeles_and_more_than_200_000_cities_around_the_world">Try London, Cairo, Los Angeles and more than 200,000 cities around the world</string>
+</resources>
