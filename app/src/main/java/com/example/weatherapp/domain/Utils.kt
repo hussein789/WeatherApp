@@ -15,7 +15,7 @@ object Utils {
         return ceil(cel).toInt()
     }
 
-    fun getTodayDateString(timezone: Int, cityName: String, countryName: String): String {
+    fun getTodayDateString(cityName: String): String {
         val cityTimeZone = TimeZone.getAvailableIDs().find { it.contains(cityName.replace(" ", "_"), true) }
         if (cityTimeZone != null && cityTimeZone.isNotEmpty()) {
             val timeZone = TimeZone.getTimeZone(cityTimeZone)
@@ -27,7 +27,7 @@ object Utils {
         return ""
     }
 
-    fun getTodayTimeString(timezone: Int, cityName: String, countryName: String): String {
+    fun getTodayTimeString(cityName: String): String {
         val cityTimeZone = TimeZone.getAvailableIDs().find { it.contains(cityName.replace(" ", "_"), true) }
         if (cityTimeZone != null && cityTimeZone.isNotEmpty()) {
             val timeZone = TimeZone.getTimeZone(cityTimeZone)
@@ -39,7 +39,7 @@ object Utils {
         return ""
     }
 
-    fun getTimeStringByMilliSec(time: Long, timezone: Int,cityName:String): String {
+    fun getTimeStringByMilliSec(time: Long,cityName:String): String {
         val cityTimeZone = TimeZone.getAvailableIDs().find { it.contains(cityName.replace(" ", "_"), true) }
         if (cityTimeZone != null && cityTimeZone.isNotEmpty()) {
             val timeZone = TimeZone.getTimeZone(cityTimeZone)
@@ -50,15 +50,6 @@ object Utils {
             return format.format(c.time)
         }
         return ""
-    }
-
-    fun setStatusBarColor(view: View, activity: Activity, color: Int?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            var flags = view.systemUiVisibility
-            flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            view.systemUiVisibility = flags
-            activity.window.statusBarColor = color!!
-        }
     }
 
     fun setLightStatusBar(view: View, activity: Activity) {

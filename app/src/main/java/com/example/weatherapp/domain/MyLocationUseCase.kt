@@ -1,36 +1,25 @@
 package com.example.weatherapp.domain
 
 import android.content.Context
-import android.location.Geocoder
+import android.location.Location
 import io.nlopez.smartlocation.SmartLocation
-import java.util.*
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class MyLocationUseCase @Inject constructor(
         private val context: Context
 ) {
-    fun invoke(callback: LocationCallback) {
-        if (SmartLocation.with(context).location().state().locationServicesEnabled()) {
+    suspend fun execute():Location{
+        return suspendCoroutine { continuation ->
             SmartLocation.with(context).location()
-                    .oneFix()
-                    .start {
-                        try {
-                            val geocode = Geocoder(context, Locale.getDefault())
-                            val addressList = geocode.getFromLocation(it.latitude, it.longitude, 1)
-                            val fullAddress = addressList?.get(0)?.adminArea?.split(" ")?.first() ?: ""
-                            callback.onLocationDetected(fullAddress)
-                        } catch (ex: Exception) {
-                            callback.onLocationNoDetected()
-                        }
-
+                .oneFix()
+                .start {
+                    try {
+                        continuation.resume(it)
+                    } catch (e: Exception) {
                     }
-        } else
-            callback.locationServiceNotEnabled()
+                }
+        }
     }
-}
-
-interface LocationCallback {
-    fun onLocationDetected(cityName: String)
-    fun locationServiceNotEnabled()
-    fun onLocationNoDetected()
 }

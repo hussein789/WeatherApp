@@ -34,7 +34,7 @@ class NetworkModule {
 
         return Retrofit.Builder()
             .baseUrl(BASE_URL_PLAYLIST)
-            .client(httpClient.build())
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

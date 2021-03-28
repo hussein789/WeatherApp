@@ -1,22 +1,28 @@
 package com.example.weatherapp.presentation.home
 
 import android.content.Context
-import android.content.Intent
-import android.provider.Settings
+import android.location.Geocoder
+import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.domain.GetWeatherInfoUseCase
-import com.example.weatherapp.domain.LocationCallback
+import com.example.weatherapp.domain.IsAnyProviderAvailableUseCase
+import com.example.weatherapp.domain.IsLocationServiceEnabledUseCase
 import com.example.weatherapp.domain.MyLocationUseCase
-import kotlinx.coroutines.delay
+import com.example.weatherapp.presentation.SingleLiveEvent
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.util.*
 
 class WeatherHomeViewModel(
-        private val getWeatherInfoUseCase: GetWeatherInfoUseCase,
-        private val locationUseCase: MyLocationUseCase,
-        private val applicationContext: Context
+    private val getWeatherInfoUseCase: GetWeatherInfoUseCase,
+    private val locationUseCase: MyLocationUseCase,
+    private val context: Context,
+    private val isLocationServiceEnabledUseCase: IsLocationServiceEnabledUseCase,
+    private val isAnyProviderAvailableUseCase: IsAnyProviderAvailableUseCase
 ) : ViewModel() {
 
     private val showError = MutableLiveData<Boolean>()
@@ -34,11 +40,12 @@ class WeatherHomeViewModel(
     private val searchedCityName = MutableLiveData<String>()
     val searchedCityNameLD: LiveData<String> get() = searchedCityName
 
-    private val showLocationPermission = MutableLiveData<Boolean>()
+    private val showLocationPermission = SingleLiveEvent<Boolean>()
     val showLocationPermissionLD: LiveData<Boolean> get() = showLocationPermission
 
-    private val showEmptyState = MutableLiveData<Boolean>()
+    private val showEmptyState = SingleLiveEvent<Boolean>()
     val showEmptyStateLD: LiveData<Boolean> get() = showEmptyState
+
 
     fun getWeatherByCityName(cityName: String) {
         viewModelScope.launch {
@@ -47,9 +54,16 @@ class WeatherHomeViewModel(
             } else {
                 showLoading.value = true
                 try {
-                    val result = getWeatherInfoUseCase.invoke(cityName)
-                    weatherInfo.value = result
-                    showContent.value = true
+                    val result = getWeatherInfoUseCase.execute(cityName)
+                    result.collect {
+                        if (it.isSuccess) {
+                            weatherInfo.value = it.getOrNull()
+                            showContent.value = true
+                        } else {
+                            showError.value = true
+                        }
+                        showLoading.value = false
+                    }
                 } catch (ex: Exception) {
                     showError.value = true
                 }
@@ -62,27 +76,32 @@ class WeatherHomeViewModel(
     fun getWeatherForCurrentLocation() {
         viewModelScope.launch {
             try {
-                showLoading.value = true
-                locationUseCase.invoke(object : LocationCallback {
-                    override fun onLocationDetected(cityName: String) {
-                        searchedCityName.value = cityName
-                    }
-
-                    override fun locationServiceNotEnabled() {
-                        showLocationPermission.value = true
+                if (isLocationServiceEnabledUseCase.execute()) {
+                    if (isAnyProviderAvailableUseCase.execute()) {
+                        showLoading.value = true
+                        val location = locationUseCase.execute()
+                        val fullAddress = getCityNameFromLocation(location)
+                        searchedCityName.value = fullAddress
                         showLoading.value = false
                     }
+                } else {
+                    showLocationPermission.value = true
+                }
 
-                    override fun onLocationNoDetected() {
-                        showLoading.value = false
-                    }
-                })
             } catch (ex: Exception) {
                 showError.value = true
                 showLoading.value = false
             }
         }
     }
+
+    private fun getCityNameFromLocation(location: Location): String {
+        val geocode = Geocoder(context, Locale.getDefault())
+        val addressList =
+            geocode.getFromLocation(location.latitude, location.longitude, 1)
+        return addressList?.get(0)?.adminArea?.split(" ")?.first() ?: ""
+    }
+
 
     fun onSearchTextChanged(text: CharSequence?) {
         getWeatherByCityName(text?.toString() ?: "")
