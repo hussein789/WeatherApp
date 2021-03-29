@@ -3,6 +3,7 @@ package com.example.weatherapp.domain
 import BaseTestClass
 import com.example.weatherapp.data.model.*
 import com.example.weatherapp.data.repo.WeatherRepository
+import com.example.weatherapp.presentation.utils.TimeZoneMapUtils
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -17,6 +18,7 @@ class GetWeatherInfoUseCaseTest : BaseTestClass(){
 
     lateinit var getWeatherInfoUseCase: GetWeatherInfoUseCase
     private val repository = mock(WeatherRepository::class.java)
+    private val timeZoneMapUtils = mock(TimeZoneMapUtils::class.java)
 
     private val cityName = "London"
 
@@ -122,7 +124,7 @@ class GetWeatherInfoUseCaseTest : BaseTestClass(){
                emit(Result.success(weatherModel))
             }
         )
-        getWeatherInfoUseCase = GetWeatherInfoUseCase(repository)
+        getWeatherInfoUseCase = GetWeatherInfoUseCase(repository,timeZoneMapUtils)
     }
 
     private fun mockFailCase() = runBlockingTest{
@@ -131,6 +133,6 @@ class GetWeatherInfoUseCaseTest : BaseTestClass(){
                 emit(Result.failure<WeatherModel>(exception))
             }
         )
-        getWeatherInfoUseCase = GetWeatherInfoUseCase(repository)
+        getWeatherInfoUseCase = GetWeatherInfoUseCase(repository,timeZoneMapUtils)
     }
 }

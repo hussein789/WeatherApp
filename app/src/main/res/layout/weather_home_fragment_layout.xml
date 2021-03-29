@@ -96,6 +96,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             >
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -255,8 +256,7 @@
                         android:id="@+id/clouds"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/pressure"
-                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/humidity"
                         android:layout_marginTop="@dimen/space16"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/text_body"
@@ -277,7 +277,7 @@
                         android:id="@+id/sunrise"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/clouds"
+                        android:layout_below="@id/pressure"
                         android:layout_alignParentEnd="true"
                         android:layout_marginTop="@dimen/space16"
                         android:isVisible="@{viewModel.weatherLD.sunrise}"
@@ -289,7 +289,8 @@
                         android:id="@+id/sunset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/humidity"
+                        android:layout_below="@id/sunrise"
+                        android:layout_alignParentEnd="true"
                         android:layout_marginTop="@dimen/space16"
                         android:isVisible="@{viewModel.weatherLD.sunset}"
                         android:text="@string/sunset"
@@ -326,7 +327,7 @@
                         android:layout_marginTop="@dimen/space16"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/text_body"
-                        tools:text="[16878158.0,78199888,]" />
+                        tools:text="Geo Coords: [16878158.0,78199888,]" />
 
 
                 </RelativeLayout>

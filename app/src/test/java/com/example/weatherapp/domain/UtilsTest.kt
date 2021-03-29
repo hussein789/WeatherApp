@@ -5,6 +5,7 @@ import org.junit.Test
 
 class UtilsTest{
 
+
     @Test
     fun convertKelvinToCel(){
         val result = Utils.convertKelvinToCel(281.63)
@@ -13,7 +14,7 @@ class UtilsTest{
 
     @Test
     fun getTodayDateString_invalidCityName_returnEmptyString(){
-        val result = Utils.getTodayDateString("California")
+        val result = Utils.getTodayDateString(null)
 
         assertEquals(result,"")
     }
@@ -29,13 +30,13 @@ class UtilsTest{
     fun getTodayTimeString_validCityName_returnEmptyString(){
         val result = Utils.getTodayTimeString("California")
 
-        assertEquals(result,"")
+        assertNotEquals(result,"")
     }
 
     @Test
     fun getTodayTimeString_inValidCityName_returnEmptyString(){
-        val result = Utils.getTodayDateString("London")
+        val result = Utils.getTodayDateString(null)
 
-        assertNotEquals(result,"")
+        assertEquals(result,"")
     }
 }

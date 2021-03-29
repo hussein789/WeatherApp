@@ -4,6 +4,7 @@ import android.app.Activity
 import android.graphics.Color
 import android.os.Build
 import android.view.View
+import com.example.weatherapp.WeatherApp
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.ceil
@@ -15,41 +16,46 @@ object Utils {
         return ceil(cel).toInt()
     }
 
-    fun getTodayDateString(cityName: String): String {
-        val cityTimeZone = TimeZone.getAvailableIDs().find { it.contains(cityName.replace(" ", "_"), true) }
-        if (cityTimeZone != null && cityTimeZone.isNotEmpty()) {
-            val timeZone = TimeZone.getTimeZone(cityTimeZone)
-            val c = Calendar.getInstance(timeZone)
-            val format = SimpleDateFormat("EEE, dd MMM yyyy")
-            format.timeZone = timeZone
-            return format.format(c.time)
+    fun getTodayDateString(timeZoneId:String?): String {
+        return try {
+            timeZoneId?.let {
+                val timeZone = TimeZone.getTimeZone(timeZoneId)
+                val c = Calendar.getInstance(timeZone)
+                val format = SimpleDateFormat("EEE, dd MMM yyyy")
+                format.timeZone = timeZone
+                format.format(c.time)
+            } ?: ""
+        } catch (ex: Exception) {
+            ""
         }
-        return ""
+
     }
 
-    fun getTodayTimeString(cityName: String): String {
-        val cityTimeZone = TimeZone.getAvailableIDs().find { it.contains(cityName.replace(" ", "_"), true) }
-        if (cityTimeZone != null && cityTimeZone.isNotEmpty()) {
-            val timeZone = TimeZone.getTimeZone(cityTimeZone)
-            val c = Calendar.getInstance(timeZone)
-            val format = SimpleDateFormat("hh:mm a")
-            format.timeZone = timeZone
-            return format.format(c.time)
+    fun getTodayTimeString(timeZoneId: String?): String {
+        return try {
+            timeZoneId?.let {
+                val timeZone = TimeZone.getTimeZone(timeZoneId)
+                val c = Calendar.getInstance(timeZone)
+                val format = SimpleDateFormat("hh:mm a")
+                format.timeZone = timeZone
+                format.format(c.time)
+            } ?: ""
+        } catch (ex: Exception) {
+            ""
         }
-        return ""
+
     }
 
-    fun getTimeStringByMilliSec(time: Long,cityName:String): String {
-        val cityTimeZone = TimeZone.getAvailableIDs().find { it.contains(cityName.replace(" ", "_"), true) }
-        if (cityTimeZone != null && cityTimeZone.isNotEmpty()) {
-            val timeZone = TimeZone.getTimeZone(cityTimeZone)
-            val c = Calendar.getInstance(timeZone)
-            c.timeInMillis = time
-            val format = SimpleDateFormat("hh:mm a")
-            format.timeZone = timeZone
-            return format.format(c.time)
-        }
-        return ""
+    fun getTimeStringByMilliSec(time: Long,timeZoneId:String?): String {
+        return timeZoneId?.let {
+            val timeZone = TimeZone.getTimeZone(timeZoneId)
+            val unix_seconds: Long = time
+            val date = Date(unix_seconds * 1000L)
+            val df = SimpleDateFormat("hh:mm a")
+            df.timeZone = timeZone
+            return df.format(date)
+        } ?: ""
+
     }
 
     fun setLightStatusBar(view: View, activity: Activity) {

@@ -99,7 +99,7 @@ class WeatherHomeViewModel(
         val geocode = Geocoder(context, Locale.getDefault())
         val addressList =
             geocode.getFromLocation(location.latitude, location.longitude, 1)
-        return addressList?.get(0)?.adminArea?.split(" ")?.first() ?: ""
+        return addressList?.get(0)?.adminArea ?: ""
     }
 
 
