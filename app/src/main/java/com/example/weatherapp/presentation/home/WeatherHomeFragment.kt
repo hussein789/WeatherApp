@@ -49,7 +49,6 @@ class WeatherHomeFragment : Fragment() {
     ): View {
 
         binding = WeatherHomeFragmentLayoutBinding.inflate(inflater, container, false)
-        Utils.setLightStatusBar(binding.root, requireActivity())
         viewModel = ViewModelProvider(this, factory).get(WeatherHomeViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
